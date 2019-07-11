@@ -111,6 +111,10 @@
             justify-content: center;
         }
 
+        footer ul li.active {
+            background: #d43c33;
+        }
+
         footer ul li .u-icon {
             /* width: 100%; */
             width: 23px;
@@ -144,7 +148,7 @@
             font-size: 12px;
         }
 
-        nav {
+        /* nav {
             display: flex;
             height: 40px;
             line-height: 40px;
@@ -179,7 +183,7 @@
             -webkit-transform: scaleY(.5);
             transform: scaleY(.5);
             background: #dd001b;
-        }
+        } */
     </style>
 </head>
 
@@ -246,7 +250,7 @@
         </svg>
         <div class="u-down">下载app</div>
     </header>
-    <nav id="nav">
+    <!-- <nav id="nav">
         <a class="active">
             <div class="tabtxt" tabmode onclick="handleSetNavFrameIndex(0)"> 推荐音乐</div>
         </a>
@@ -256,24 +260,24 @@
         <a>
             <div class="tabtxt" tapmode onclick="handleSetNavFrameIndex(2)"> 搜索</div>
         </a>
-    </nav>
+    </nav> -->
     <main></main>
-    <footer>
+    <footer id="footer">
         <ul>
-            <li>
-                <div class="u-icon"></div>
+            <li class="active">
+                <div class="u-icon" tapmode onclick="handleSwitchFrame(0,'find_frame')"></div>
                 <p>发现音乐</p>
             </li>
             <li>
-                <div class="u-icon"></div>
+                <div class="u-icon" tapmode onclick="handleSwitchFrame(1,'me_frame')"></div>
                 <p>我的音乐</p>
             </li>
             <li>
-                <div class="u-icon"></div>
+                <div class="u-icon" tapmode onclick="handleSwitchFrame(2,'friend_frame')"></div>
                 <p>朋友</p>
             </li>
             <li>
-                <div class="u-icon"></div>
+                <div class="u-icon" tapmode onclick="handleSwitchFrame(3,'account_frame')"></div>
                 <p>账号</p>
             </li>
         </ul>
@@ -285,8 +289,8 @@
     apiready = function () {
         header = $api.dom('header')
         footer = $api.dom('footer')
-        nav = $api.dom('nav')
-        navH = $api.offset(nav).h;
+        // nav = $api.dom('nav')
+        // navH = $api.offset(nav).h;
         // console.log(navH)
         headerH = $api.fixStatusBar(header);
         footerH = $api.fixTabBar(footer);
@@ -304,59 +308,66 @@
         //         // h: 'auto'
         //     }
         // });
-        handleOpenNavFrameGroup()
-    }
+        // handleOpenNavFrameGroup()
+        handleOpenFrame({
+            frameName: 'find_frame',
+            marginTop: headerH,
+            marginBottom: footerH
+        })
 
+
+
+    }
 
     /**
      * 设置头部nav切换frame
      * @params {frameIndex} 切换索引
      */
-    function handleSetNavFrameIndex(frameIndex) {
-        api.setFrameGroupIndex({
-            name: 'navFrameGroup',
-            index: frameIndex,
-            scroll: true
-        });
-    }
+    // function handleSetNavFrameIndex(frameIndex) {
+    //     api.setFrameGroupIndex({
+    //         name: 'navFrameGroup',
+    //         index: frameIndex,
+    //         scroll: true
+    //     });
+    // }
     /**
      * 打开frame组
      */
-    function handleOpenNavFrameGroup() {
-        api.openFrameGroup({
-            name: 'navFrameGroup',
-            scrollEnabled: true,
-            rect: {
-                marginTop: headerH + navH,
-                marginBottom: footerH,
-                // x: 0,
-                // y: 0,
-                // h: 'auto',
-                w: 'auto',
-            },
-            index: 0,
-            frames: [{
-                name: 'nav_recommend',
-                url: './html/navFrameGroup/recommendFrame.html',
-                bounces: true,
-            }, {
-                name: 'nav_hot_music',
-                url: './html/navFrameGroup/hotMusicFrame.html',
-                bounces: false,
-            }, {
-                name: 'nav_srarch',
-                url: './html/navFrameGroup/searchFrame.html',
-                bounces: false
-            }]
-        }, function (ret, err) {
+    // function handleOpenNavFrameGroup() {
+    //     api.openFrameGroup({
+    //         name: 'navFrameGroup',
+    //         scrollEnabled: true,
+    //         rect: {
+    //             marginTop: headerH + navH,
+    //             marginBottom: footerH,
+    //             // x: 0,
+    //             // y: 0,
+    //             // h: 'auto',
+    //             w: 'auto',
+    //         },
+    //         index: 2,
+    //         frames: [{
+    //             name: 'nav_recommend',
+    //             url: './html/navFrameGroup/recommendFrame.html',
+    //             bounces: true,
+    //         }, {
+    //             name: 'nav_hot_music',
+    //             url: './html/navFrameGroup/hotMusicFrame.html',
+    //             bounces: true,
+    //         }, {
+    //             name: 'nav_srarch',
+    //             url: './html/navFrameGroup/searchFrame.html',
+    //             bounces: true
+    //         }]
+    //     }, function (ret, err) {
 
-            handleNavFrameGroupStatus(ret.index)
-            // console.log(ret.index)
-            // var name = ret.name;
-            // var index = ret.index;
-            // console.log(ret)
-        });
-    }
+    //         handleNavFrameGroupStatus(ret.index)
+    //         // console.log(ret.index)
+    //         // var name = ret.name;
+    //         // var index = ret.index;
+    //         // console.log(ret)
+    //     });
+    // }
     /**
      * 设置nav组索引位置
      * @params index 切换后的索引值
@@ -365,8 +376,6 @@
         // console.log(index)
         var navMenu = $api.byId('nav')
         var navLinks = $api.domAll(navMenu, 'a')
-        console.log(navMenu)
-        console.log(navLinks.length)
 
         for (var i = 0; i < navLinks.length; i++) {
             if (i === index) {
@@ -393,6 +402,165 @@
         // }
         // setFrameGropStatus[index]()
     }
+
+    /*
+    *  设置底部切换
+    *  @params index 底部tab索引
+    *  @params frameName 切换frame名称
+    */
+    function handleSwitchFrame(index, frameName) {
+        // console.log(index)
+
+        var navMenu = $api.byId('footer')
+        var navLinks = $api.domAll(navMenu, 'li')
+
+        for (var i = 0; i < navLinks.length; i++) {
+            if (i === index) {
+                // alert(navLinks[i])
+                $api.addCls(navLinks[i], 'active')
+            } else {
+                // alert(2)
+                $api.removeCls(navLinks[i], 'active')
+            }
+        }
+
+        api.setFrameGroupAttr({
+            name: 'navFrameGroup',
+            hidden: true
+        });
+        api.setFrameAttr({
+            name: 'find_frame',
+            hidden: true
+        });
+        api.setFrameAttr({
+            name: 'me_frame',
+            hidden: true
+        });
+        api.setFrameAttr({
+            name: 'account_frame',
+            hidden: true
+        });
+        api.setFrameAttr({
+            name: 'friend_frame',
+            hidden: true
+        });
+        // alert(index)
+        switch (index) {
+            case 0: {
+                // alert(frameName)
+                handleOpenFrame({
+                    frameName: frameName,
+                    marginTop: headerH + navH,
+                })
+            }
+            case 1: {
+                // alert(frameName)
+                handleOpenFrame({
+                    frameName: frameName,
+                })
+
+            }
+            case 2: {
+                // alert(frameName)
+                handleOpenFrame({
+                    frameName: frameName,
+                })
+
+            }
+            case 3: {
+                // alert(frameName)
+                handleOpenFrame({
+                    frameName: frameName,
+                })
+
+            }
+            default:
+                break;
+        }
+        // var handleJudgeSwitch = {
+        //     'find_frame': function () {
+        //         handleOpenFrame({
+        //             frameName: frameName
+        //         })
+        //     },
+        //     'me_frame': function () {
+        //         console.log(frameName)
+        //         handleOpenFrame({
+        //             frameName: frameName,
+        //             marginTop: headerH + navHeight,
+        //             marginBottom: footerH
+        //         })
+        //     },
+        //     'friend_frame': function () {
+        //         handleOpenFrame({
+        //             frameName: frameName,
+        //             marginTop: headerH + navHeight,
+        //             marginBottom: footerH
+        //         })
+
+        //     },
+        //     'account_frame': function () {
+        //         handleOpenFrame({
+        //             frameName: frameName,
+        //             marginTop: headerH + navHeight,
+        //             marginBottom: footerH
+        //         })
+
+        //     },
+
+        // }
+        // handleJudgeSwitch[frameName]()
+
+
+
+
+    }
+
+    /**
+    * 打开frame
+    * @params 
+    */
+    function handleOpenFrame(obj) {
+        // console.log('------')
+        // console.log(obj.frameName)
+        // alert(1)
+        // alert(obj.frameName)
+        // console.log(1)
+        // console.log('./html/' + obj.frameName + '.html')
+        // console.log(2)
+        // console.log('------')
+        api.openFrame({
+            name: obj.frameName,
+            url: './html/' + obj.frameName + '.html',
+            bounces: true,
+            rect: {
+                // x: 0,
+                // y: 0,
+                marginTop: obj.marginTop || headerH,
+                marginBottom: obj.marginBottom || footerH,
+                w: 'auto',
+                // h: 'auto'
+            },
+            pageParam: {
+                headerH: headerH,
+                footerH: footerH
+            },
+
+            reload: true
+        });
+    }
+
+
+    // var getHeight = function getTopAndBottomHeight() {
+    //     // return{headerH,footerH}
+    //     alert(1)
+    // }
+
+    // api.execScript({
+    //     script: getHeight
+    // });
+
+
 
     // apiready = function() {
     //     //输出Log，Log将显示在APICloud Studio控制台
