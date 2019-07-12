@@ -155,138 +155,39 @@
 <body>
     <div class="recommend-container">
         <div class="u-tt">推荐歌单</div>
-        <ul class="music-list" id="doTRecommendListUl">
-            <!-- <li>
+        <script id="doTRecommendList" type="text/x-dot-template">
+            {{ for(var x in it) { }}
+            <li onclick="openNewWin({id:{{= it[x].id}},name:'musicList'})">
                 <div class="cover">
-                    <img src="../../image/music163/cover.png" alt="">
-                    <div class="total-play">103.6万</div>
+                    <img src="{{= it[x].picUrl}}" alt="">
+                    <div class="total-play">{{= it[x].playCount}}</div>
                 </div>
-                <div class="title">热带浩室 | 带你潜入电音的50米深蓝</div>
+                <div class="title">{{= it[x].name}}</div>
             </li>
-            <li>
-                <div class="cover">
-                    <img src="../../image/music163/cover.png" alt="">
-                    <div class="total-play">103.6万</div>
-                </div>
-                <div class="title">热带浩室 | 带你潜入电音的50米深蓝</div>
-            </li>
-            <li>
-                <div class="cover">
-                    <img src="../../image/music163/cover.png" alt="">
-                    <div class="total-play">103.6万</div>
-                </div>
-                <div class="title">热带浩室 | 带你潜入电音的50米深蓝</div>
-            </li>
-            <li>
-                <div class="cover">
-                    <img src="../../image/music163/cover.png" alt="">
-                    <div class="total-play">103.6万</div>
-                </div>
-                <div class="title">热带浩室 | 带你潜入电音的50米深蓝</div>
-            </li>
-            <li>
-                <div class="cover">
-                    <img src="../../image/music163/cover.png" alt="">
-                    <div class="total-play">103.6万</div>
-                </div>
-                <div class="title">热带浩室 | 带你潜入电音的50米深蓝</div>
-            </li>
-            <li>
-                <div class="cover">
-                    <img src="../../image/music163/cover.png" alt="">
-                    <div class="total-play">103.6万</div>
-                </div>
-                <div class="title">热带浩室 | 带你潜入电音的50米深蓝</div>
-            </li> -->
-        </ul>
+            {{ } }}
+         
+        </script>
+        <ul class="music-list" id="doTRecommendListUl"></ul>
         <!--  循环 -->
 
-        <script id="doTRecommendList" type="text/x-dot-template">
-
-
-            {{for(var i in it) { }}
-            <li>
-                {{=i}}
-                    <div class="cover">
-                        <img src="../../image/music163/cover.png" alt="">
-                        <div class="total-play">103.6万</div>
+        <div class="u-tt">最新音乐</div>
+        <script id="doTLatestMusicList" type="text/x-dot-template">
+            {{ for(var x in it) { }}
+            <li onclick="openNewWin({id:{{= it[x].id}},name:'musicPlay' })">
+                <div class="music-brief">
+                    <div class="music-name ellipsis">{{= it[x].name}}</div>
+                    <div class="music-info ellipsis">
+                        {{ for(var y in it[x].song.artists) { }}
+                            {{= it[x].song.artists[y].name}} {{? y != it[x].song.artists.length-1}}/{{?}}
+                        {{ } }}
                     </div>
-                    <div class="title">热带浩室 | 带你潜入电音的50米深蓝</div>
-                </li>
+                </div>
+                <div class="btn-play"></div>
+            </li>
             {{ } }}
         </script>
-        <div class="u-tt">最新音乐</div>
-        <ul class="latest-music">
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
-            <li>
-                <div class="music-brief">
-                    <div class="music-name ellipsis">吹梦到西洲</div>
-                    <div class="music-info ellipsis">恋恋故人难 / 黄诗扶 / 妖扬</div>
-                </div>
-                <div class="btn-play"></div>
-            </li>
+        <ul class="latest-music" id="doTLatestMusicUl">
+
         </ul>
     </div>
 </body>
@@ -294,51 +195,35 @@
 <script src="https://cdn.bootcss.com/dot/1.1.2/doT.js"></script>
 <script>
     apiready = function () {
-
-
-
-
         $api.get('http://192.168.0.30:3000/personalized', function (ret) {
-            // alert(ret);
-            // console.log(JSON.stringify(ret))
-
-            // var ret = JSON.stringify(ret)
-            // var result = re
-            // console.log(ret)
-            // console.log(ret.code===200)
             if (ret.code === 200) {
-
                 var result = ret.result.splice(0, 6)
-
-
-                // var doTRecommendList = $api.dom('#doTRecommendList');
-                // var doTRecommendListUl = $api.dom('#doTRecommendListUl');
-                // console.log(doTRecommendList)
-                // console.log(doTRecommendListUl)
-                // var doTRecommendList = doT.template(doTRecommendList.text());
-                // doTRecommendListUl.html(result);
-
-
-
                 var doTRecommendList = doT.template($api.dom('#doTRecommendList').innerHTML);
-                $api.dom('#doTRecommendListUl').innerHTML = evaluation(result);
-                // $api.html(el, '<h1>world</h1>');
-                // console.log(result)
-                // console.log(JSON.stringify(result))
-                // console.log(222)
-
-
-
-                //	循环	
-                var evaluationData = {
-                    'firstName': 'bi',
-                    'lastName': 'mingxing',
-                    'age': 22
-                };
-                // var evaluation = doT.template($api.dom('#evaluationTemp').innerHTML);
-                // $api.dom('#evaluation').innerHTML = evaluation(evaluationData);
+                $api.dom('#doTRecommendListUl').innerHTML = doTRecommendList(result);
             }
         }, 'json');
+
+        $api.get('http://192.168.0.30:3000/personalized/newsong', function (ret) {
+            if (ret.code === 200) {
+                var result = ret.result.splice(0, 10)
+                var doTLatestMusicList = doT.template($api.dom('#doTLatestMusicList').innerHTML)
+                $api.dom('#doTLatestMusicUl').innerHTML = doTLatestMusicList(result)
+            }
+
+        }, 'json')
+    }
+
+
+
+    function openNewWin(obj) {
+        api.openWin({
+            name: obj.name,
+            url: '../' + obj.name + '/' + obj.name + 'Frame.html',
+            bounces: false,
+            opaque: false,
+            bgColor: "#fff",
+            pageParam: { id: obj.id }
+        });
     }
 
 

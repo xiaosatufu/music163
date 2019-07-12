@@ -82,7 +82,6 @@
          */
     function handleOpenNavFrameGroup() {
 
-        // console.log(navH)
         api.openFrameGroup({
             name: 'navFrameGroup',
             scrollEnabled: true,
@@ -95,6 +94,7 @@
                 w: 'auto',
             },
             index: 0,
+            reload: true,
             frames: [{
                 name: 'nav_recommend',
                 url: './navFrameGroup/recommendFrame.html',

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <style>
+        .music-play {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .song-bg {
+            /* background-image: url(https://p1.music.126.net/QHw-RuMwfQkmgtiyRpGs0Q==/102254581395219.jpg); */
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            top: 0;
+            right: 0;
+            filter: blur(20px);
+            -webkit-transform: scale(1.5);
+            -ms-transform: scale(1.5);
+            transform: scale(1.5);
+        }
+
+        .song-bg::before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        .song-wrap {
+            padding-top: 70px;
+        }
+
+        .song-wrap .song-disc {
+            width: 296px;
+            height: 296px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .song-wrap .song-disc::after {
+            content: " ";
+            position: absolute;
+            width: 96px;
+            height: 137px;
+            top: -70px;
+            left: 133px;
+            z-index: 5;
+            background: url('../../image/music163/needle-ip6.png') no-repeat;
+            background-size: contain;
+        }
+
+        .song-wrap .song-disc .song-turn {
+            width: 100%;
+            height: 100%;
+        }
+
+        .song-wrap .song-disc .song-turn::before {
+            content: " ";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 2;
+            background: url('../../image/music163/disc-ip6.png') no-repeat;
+            background-size: contain;
+        }
+
+        .song-wrap .song-disc .song-rollwrap {
+            position: absolute;
+            width: 184px;
+            height: 184px;
+            margin: -92px 0 0 -92px;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+        }
+
+        .song-wrap .song-disc .song-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            /* background: url(https://p1.music.126.net/QHw-RuMwfQkmgtiyRpGs0Q==/102254581395219.jpg) no-repeat; */
+            background-size: contain;
+        }
+
+        .song-wrap .song-light {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 3;
+            background-image: url('../../image/music163/disc_light.png');
+            background-size: contain;
+        }
+
+        .a-circling {
+            animation: circling 20s linear infinite;
+        }
+
+        .song-play-btn {
+            position: absolute;
+            width: 56px;
+            height: 56px;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            background: url('../../image/music163/play.png') 0 0 no-repeat;
+            background-size: contain;
+        }
+
+        @-webkit-keyframes circling {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg)
+            }
+
+            to {
+                -webkit-transform: rotate(1turn);
+                transform: rotate(1turn)
+            }
+        }
+
+        @keyframes circling {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg)
+            }
+
+            to {
+                -webkit-transform: rotate(1turn);
+                transform: rotate(1turn)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script id="doTMusicPlayInner" type="text/x-dot-template">
+        <div class="song-bg" style="background-image:url({{= it.al.picUrl}})"></div>
+        <div class="song-wrap">
+            <div class="song-disc">
+                <div class="song-turn">
+                    <div class="song-rollwrap">
+                        <div class="song-img a-circling" style="background-image:url({{= it.al.picUrl}})"></div>
+                    </div>
+                    <div class="song-light a-circling"></div>
+                </div>
+                <div class="song-play-btn"></div>
+            </div>
+        </div>
+    </script>
+    <div class="music-play" id="doTMusicPlayContainer">
+
+
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script src="https://cdn.bootcss.com/dot/1.1.2/doT.js"></script>
+<script src="../../script/config.js"></script>
+<script>
+
+    apiready = function () {
+        var id = api.pageParam.id
+        $api.get(CONFIG.BaseUrl + '/song/detail?ids=' + id, function (ret) {
+            var result = ret.songs[0]
+            var songId = result.id
+            var doTMusicPlayInner = doT.template($api.dom('#doTMusicPlayInner').innerHTML)
+            $api.dom('#doTMusicPlayContainer').innerHTML = doTMusicPlayInner(result)
+            loadSong(songId)
+        }, 'json')
+        // console.log(JSON.stringify(CONFIG))
+    }
+
+    function loadSong(id) {
+        $api.get(CONFIG.BaseUrl + '/song/url?id=' + id, function (ret) {
+            var result = ret.data[0]
+            var musicUrl = result.url
+            console.log(JSON.stringify(musicUrl))
+            var audioStreamer = api.require('audioStreamer');
+            audioStreamer.openPlayer({
+                path: musicUrl,
+            }, function (ret) {
+                if (ret.status) {
+                    api.alert({ msg: JSON.stringify(ret) });
+                }
+            });
+        }, 'json')
+    }
+
+</script>
+
+</html>
